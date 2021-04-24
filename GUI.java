@@ -4,7 +4,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class GUI implements ActionListener {
-    private int clicks = 0;
     private JLabel label = new JLabel(
             "Velkommen til 'labyrint', dette programmed beregner alle de ulikene måtene å gå ut fra et punk til utveien. Vennligst klikk på et hvitt felt og se på alle de mulighetene til utvei");
     private JFrame frame = new JFrame();
