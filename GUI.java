@@ -3,6 +3,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+/**
+ * This object makes a GUI for the 'last ned en labyrint' button The point of
+ * the GUI is that the user will load a labyrint and click on a point in the
+ * labyrint. The program then finds all the possible exit routes and lists them
+ * down as buttons for the user to click true and see all the possible ways of
+ * exiting the labyrint. Code is mainly written with Norwegian variables and
+ * comments. Sorry for the inconvinience (´ω｀*)
+ */
 public class GUI implements ActionListener {
     private JLabel label = new JLabel(
             "Velkommen til 'labyrint', dette programmed beregner alle de ulikene måtene å gå ut fra et punk til utveien. Vennligst klikk på et hvitt felt og se på alle de mulighetene til utvei");
@@ -14,75 +22,27 @@ public class GUI implements ActionListener {
     private ArrayList<ArrayList<Tuppel>> utveier;
 
     // oppretter knapp
-    // private JButton button = new JButton("Click Me");
+    private JButton chooseButton = new JButton("Velg en annen labyrint");
 
     // oppretter paneler
     private JPanel menuPanel = new JPanel();
     private JPanel utveiPanel = new JPanel(); // panel som viser knapper som brukeren kan klikke pa for a fa utveier
 
     public GUI() {
-        int response;
-
-        JFileChooser chooser = new JFileChooser(".");
-
-        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        response = chooser.showOpenDialog(null);
-
-        if (response == JFileChooser.APPROVE_OPTION) {
-            try {
-                labyrint.lesFraFil(chooser.getSelectedFile());
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-
-        // menuPanel
-
-        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.PAGE_AXIS));
-
-        // the panel with the button and text
-        JPanel textPanel = new JPanel();
-        textPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-        // textPanel.setLayout(new GridLayout(1, 1));
-        textPanel.add(label);
-
-        // panel with the labyrint
-        JPanel labyrintPanel = new JPanel();
-        Rute[][] labyrintArray = labyrint.returnLabyrintArray();
-        labyrintPanel.setLayout(new GridLayout(labyrintArray.length, labyrintArray[0].length));
-
-        for (int i = 0; i < labyrintArray.length; i++) {
-            // oppretter en arrayliste med JButton
-            ArrayList<JButton> jButtonList = new ArrayList<>();
-            for (int j = 0; j < labyrintArray[0].length; j++) {
-                JButton knapp = new JButton(labyrintArray[i][j].tilTegn());
-                // Gir knappen en event listener
-                knapp.addActionListener(this);
-                // legger knappen inni arraylisten
-                jButtonList.add(knapp);
-                if (labyrintArray[i][j].tilTegn().equals("#")) {
-                    knapp.setBackground(Color.BLACK);
-                }
-                labyrintPanel.add(knapp);
-            }
-            // legger arraylisten med knapper inni en arraylist slik at den blir
-            // to dimensjonel og representerer vår labyrint
-            labyrintJButtonList.add(jButtonList);
-        }
-
-        // set up frame and display it
-        labyrintPanel.setMinimumSize(new Dimension(200, 200));
-        frame.add(menuPanel);
-        menuPanel.add(labyrintPanel);
-        menuPanel.add(textPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("Labyrinten");
-        frame.pack();
-        frame.setVisible(true);
+        buildGUI();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        // chooseButton, brukeren velger en annen labyrint
+        if (e.getSource() == chooseButton) {
+            // reseter GUI og loader in med den nye labyrinten brukeren
+            // valgte
+            resetGUI();
+            buildGUI();
+            return;
+        }
 
         // setter bakgrunnsfargene til knappene tilbake til default
         for (int i = 0; i < labyrintJButtonList.size(); i++) {
@@ -168,6 +128,100 @@ public class GUI implements ActionListener {
                 }
             }
         }
+    }
+
+    // starter opp hele GUI-et
+    private void buildGUI() {
+        int response;
+
+        JFileChooser chooser = new JFileChooser(".");
+
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        response = chooser.showOpenDialog(null);
+
+        if (response == JFileChooser.APPROVE_OPTION) {
+            try {
+                labyrint.lesFraFil(chooser.getSelectedFile());
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+
+        // menuPanel
+
+        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.PAGE_AXIS));
+
+        // choose another labyrint button
+        menuPanel.add(chooseButton);
+        // lager en if setning slik at knappen ikke får en actionlistener vær gang
+        // brukeren velger en ny labyrint
+        if (chooseButton.getActionListeners().length != 1) {
+            chooseButton.addActionListener(this);
+        }
+
+        // the panel with the text
+        JPanel textPanel = new JPanel();
+        textPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+        // textPanel.setLayout(new GridLayout(1, 1));
+        textPanel.add(label);
+
+        // panel with the labyrint
+        JPanel labyrintPanel = new JPanel();
+        Rute[][] labyrintArray = labyrint.returnLabyrintArray();
+        labyrintPanel.setLayout(new GridLayout(labyrintArray.length, labyrintArray[0].length));
+
+        for (int i = 0; i < labyrintArray.length; i++) {
+            // oppretter en arrayliste med JButton
+            ArrayList<JButton> jButtonList = new ArrayList<>();
+            for (int j = 0; j < labyrintArray[0].length; j++) {
+                JButton knapp = new JButton(labyrintArray[i][j].tilTegn());
+                // Gir knappen en event listener
+                knapp.addActionListener(this);
+                // legger knappen inni arraylisten
+                jButtonList.add(knapp);
+                if (labyrintArray[i][j].tilTegn().equals("#")) {
+                    knapp.setBackground(Color.BLACK);
+                }
+                labyrintPanel.add(knapp);
+            }
+            // legger arraylisten med knapper inni en arraylist slik at den blir
+            // to dimensjonel og representerer vår labyrint
+            labyrintJButtonList.add(jButtonList);
+        }
+
+        // set up frame and display it
+        labyrintPanel.setMinimumSize(new Dimension(200, 200));
+        menuPanel.add(labyrintPanel);
+        menuPanel.add(textPanel);
+        frame.add(menuPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Labyrinten");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    // reseter interface, brukes når brukeren klikker på velg en annen labyrint
+    // knapp
+    private void resetGUI() {
+        label.setText(
+                "Velkommen til 'labyrint', dette programmed beregner alle de ulikene måtene å gå ut fra et punk til utveien. Vennligst klikk på et hvitt felt og se på alle de mulighetene til utvei");
+        menuPanel.removeAll();
+        utveiPanel.removeAll();
+
+        labyrintJButtonList.clear();
+        visUtveiJButtonList.clear();
+        labyrint = new Labyrint();
+        if (utveier != null) {
+            utveier.clear();
+        }
+
+        // oppretter knapp
+        // private JButton button = new JButton("Click Me");
+
+        // oppretter paneler
+        // private JPanel menuPanel = new JPanel();
+        // private JPanel utveiPanel = new JPanel(); // panel som viser knapper som
+        // brukeren kan klikke pa for a fa utveier
     }
 
     private void visUtveiFra(ArrayList<Tuppel> tupperList) {
