@@ -13,8 +13,9 @@ public class Aapning extends SortRute {
 
     @Override
     public void gaa(Rute currentRute, ArrayList<Tuppel> utveien) {
-        //System.out.println("UTVEI! på " + kolonneX + ", " + radY);
-        utveien.add(new Tuppel(kolonneX, radY));
-        minLabyrint.leggTilUtvei(utveien);
+        // System.out.println("UTVEI! på " + kolonneX + ", " + radY);
+        ArrayList<Tuppel> nyUtveien = new ArrayList<>(utveien);
+        nyUtveien.add(new Tuppel(kolonneX, radY));
+        minLabyrint.leggTilUtvei(nyUtveien);
     }
 }

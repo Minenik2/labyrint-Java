@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Labyrint {
-    private Rute[][] labyrintArray;
+    protected Rute[][] labyrintArray;
     private ArrayList<ArrayList<Tuppel>> utveier = new ArrayList<>();
 
     @Override

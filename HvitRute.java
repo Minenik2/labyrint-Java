@@ -13,7 +13,7 @@ public class HvitRute extends Rute {
 
     @Override
     public void gaa(Rute currentRute, ArrayList<Tuppel> utveien) {
-        //System.out.println("Vi er på " + kolonneX + ", " + radY);
+        // System.out.println("Vi er på " + kolonneX + ", " + radY);
         ArrayList<Tuppel> nyUtveien = new ArrayList<>(utveien);
         nyUtveien.add(new Tuppel(kolonneX, radY));
         currentRute.setVisited(true);
