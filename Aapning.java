@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Aapning extends SortRute {
+public class Aapning extends HvitRute {
 
     Aapning(int setX, int setY, Labyrint setLabyrint) {
         super(setX, setY, setLabyrint);
