@@ -217,14 +217,6 @@ public class GUILabyrint implements ActionListener {
         if (utveier != null) {
             utveier.clear();
         }
-
-        // oppretter knapp
-        // private JButton button = new JButton("Click Me");
-
-        // oppretter paneler
-        // private JPanel menuPanel = new JPanel();
-        // private JPanel utveiPanel = new JPanel(); // panel som viser knapper som
-        // brukeren kan klikke pa for a fa utveier
     }
 
     public void showGUI() {
