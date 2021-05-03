@@ -93,8 +93,11 @@ public class GUILabyrint implements ActionListener {
                     utveiPanel.setPreferredSize(new Dimension(200, 200));
                     for (int k = 0; k < utveier.size(); k++) {
                         // oppretter en knapp som viser en utvei retning
-                        JButton visUtveiKnapp = new JButton();
+                        JButton visUtveiKnapp = new JButton(".");
                         visUtveiKnapp.addActionListener(this);
+                        // setter knappen til opaque for mac
+                        visUtveiKnapp.setOpaque(true);
+                        visUtveiKnapp.setBorderPainted(false);
                         // legger den knappen inni visutveiKnapp
                         visUtveiJButtonList.add(visUtveiKnapp);
                         utveiPanel.add(visUtveiKnapp);
@@ -179,6 +182,9 @@ public class GUILabyrint implements ActionListener {
                 JButton knapp = new JButton(labyrintArray[i][j].tilTegn());
                 // Gir knappen en event listener
                 knapp.addActionListener(this);
+                // setter knappen til opaque for mac
+                knapp.setOpaque(true);
+                knapp.setBorderPainted(false);
                 // legger knappen inni arraylisten
                 jButtonList.add(knapp);
                 if (labyrintArray[i][j].tilTegn().equals("#")) {
